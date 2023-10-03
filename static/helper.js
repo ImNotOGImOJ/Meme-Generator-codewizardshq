@@ -1,6 +1,6 @@
 var username = "codewizardshq";
 var password = "wizardcode";
-var imgFlip = "https://api.imgflip.com/get_memes";
+var imgFlip = "https://api.imgflip.com/get_memes"
 var imgFlip_post = "https://api.imgflip.com/caption_image";
 
 function getMemes(callback) {
