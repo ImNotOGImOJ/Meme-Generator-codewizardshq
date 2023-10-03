@@ -1,0 +1,64 @@
+{% extends "layout.html" %}
+
+{% block heading %}
+  <img class="display-photo" src="{{url_for('static', filename=profile_photo)}}">
+  <h1>Gifs, Gifs, everywhere!</h1>
+{% endblock %}
+
+{% block content %}
+  <form method="POST" action="{{url_for('memes.publish_meme')}}">
+    <input type="hidden" name="image_url" id="hiddenInput">
+    <div class="container">
+      <div class="creator gif-creator">
+        <input id="searchInput" type="text" placeholder="Search for gifs">
+        <button id="searchBtn">Search</button>
+        <div class="search-results"></div>
+      </div>
+    </div>
+  </form>
+
+  <script>
+    /*
+    Exercise 1: Get your Giphy API key.
+    Exercise 2: In file meme_generator.py, render the gif search page.
+    Exercise 3: Search for gifs using the Giphy API.
+    Exercise 4: Show the gif images from the API response.
+    Bonus: Remove the empty spaces in the username while signup and login.
+    */
+    var giphyUrl = "https://api.giphy.com/v1/gifs/search";
+    var giphyKey = "plQS6Ei9u3snipYziNuQZNcRx4rbG7Us";
+    function search(event){
+      event.preventDefault();
+      var keyword = $('#searchInput').val();
+      var options = {
+        api_key: giphyKey,
+        q:keyword
+      };
+      $.ajax({
+        url: giphyUrl,
+        data: options
+      }).then(showGifs);
+    }
+    
+function showGifs(response) {
+  console.log(response);
+  var gifsArray = response.data;
+  $('.search-results').html('')
+  for (g of gifsArray) {
+    var media = g.images.original.url;
+    var gifHtml = `<div class="gif-wrapper">
+                   <img src="${media}">
+                   </div>`;
+    $('.search-results').append(gifHtml);
+  }
+}
+$('#searchBtn').click(search);
+
+
+
+
+
+  </script>
+{% endblock %}
+{% set logged_in=True %}
+{% set page_title="Gifs" %}

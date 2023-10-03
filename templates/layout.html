@@ -1,0 +1,29 @@
+<html>
+  <head>
+    <title>{{page_title}}</title>
+    <link rel="stylesheet" href="{{url_for('static', filename='style.css')}}">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <link href="https://fonts.googleapis.com/css?family=Bebas+Neue&display=swap" rel="stylesheet">
+    <script src="{{url_for('static', filename='helper.js') }}"> </script>
+  </head>
+  <body>
+    {% block heading %} {% endblock %}
+    <div class="links">
+        {% if logged_in %}
+          <a href="{{url_for('memes.meme_generator')}}">Create Meme</a>
+          <a href="{{url_for('memes.upload_meme')}}">Upload</a>
+          <a href="{{url_for('memes.gif_search')}}">jifs</a>
+          <a href="{{url_for('memes.profile_page')}}">Profile</a>
+          <a href="{{url_for('memes.meme_feed')}}">Memes</a>
+          <a href="{{url_for('auth.logout')}}">Logout</a>
+        {% else %}
+          <a href="{{url_for('auth.login_page')}}">Login</a>
+          <a href="{{url_for('memes.meme_feed')}}">Memes</a>
+        {% endif %}
+    </div>
+    {% block content %} {% endblock %}
+
+    <div class="footer">Brought to you by CodeWizardsHQ</div>
+  </body>
+</html>

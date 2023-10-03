@@ -1,0 +1,36 @@
+{% extends "layout.html" %}
+
+  {% block heading %}
+    <h1>Welcome to the world of memes!</h1>
+  {% endblock %}
+
+
+  {% block content %}
+  <div class="container meme-uploader">
+
+    <div class="upload-form">
+      <form method="POST" enctype="multipart/form-data" action="{{url_for('memes.publish_meme')}}">
+        <img id="meme-image" src="https://i.imgflip.com/4hm36n.jpg">
+        <input type="hidden" name="image_url" value="uploaded meme">
+        <input type="file" id="meme-input" name="image" accept=".jpg, .png, .gif">
+        
+        <input type="submit" value="Upload">
+      </form>
+    </div>
+
+  </div>
+  <script>
+    function readURL(event) {
+      var input = event.currentTarget;
+      if (input.files[0]) {
+        var reader = new FileReader();
+        reader.readAsDataURL(input.files[0]);
+        reader.onload = function (e) {
+          $('#meme-image').attr('src', e.target.result);
+        }
+      }
+    }
+    $("#meme-input").change(readURL);
+</script>
+{% endblock %}
+{% set logged_in=True %}

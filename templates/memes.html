@@ -1,25 +1,14 @@
-<!--
-  Exercise 5: Collect all the meme texts in one object.
-  Exercise 6: Show the generated meme with its url.
-  Exercise 7: Show an error meme on creating a meme without text.
-  Bonus 1: Add the functionality to copy the url on click.
-  Bonus 2: Show "Copied to clipboard" text for a second.
--->
+{% extends "layout.html" %}
 
-<html>
-
-<head>
-  <title>Meme Generator</title>
-  <link rel="stylesheet" href="style.css">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-  <link href="https://fonts.googleapis.com/css?family=Bebas+Neue&display=swap" rel="stylesheet">
-</head>
-<script src="helper.js"></script>
-<body>
-
+{% block heading %}
+  <img class="display-photo" src="{{url_for('static', filename=profile_photo)}}">
   <h1>Welcome to the world of memes!</h1>
+{% endblock %}
 
+{% set logged_in=True %}
+{% set page_title="Meme Generator" %}
+
+{% block content %}
   <div class="container">
     <div class="creator">
       <select id="meme-templates"></select>
@@ -32,12 +21,17 @@
     </div>
 
     <div class="final-meme">
-      <img src="meme.jpg" id="meme-image">
+      <img src="https://i.imgflip.com/48tigh.jpg" id="meme-image">
       <p id="meme-url">Meme url will appear here</p>
+      <form action="{{url_for('memes.publish_meme')}}" method="POST">
+        <input type="hidden" name="image_url" id="hiddenInput">
+        <button id="publish-btn">Publish</button>
+      </form>
     </div>
   </div>
 
   <script>
+    $('form').hide();
     var memesArray, meme;
 
     getMemes(showOptions);
@@ -83,33 +77,48 @@
       $('#meme-templates').val(next);
       $('#meme-templates').change();
     }
-    function generate(){
-      var inputBox = $('.boxes > input');
+
+    function generate() {
+      var inputBoxes = $('.boxes > input');
       var textArray = [];
-   for (input of inputBox) {
-      var textObj = {
-      'text':$(input).val()
-     }
-    textArray.push(textObj)
-   }
-    console.log(textArray);
-    createMeme(meme.id, textArray, showMeme);
+      for (input of inputBoxes) {
+        var textObj = {
+          'text': $(input).val()
+        }
+        textArray.push(textObj);
+      }
+      console.log(textArray);
+      createMeme(meme.id, textArray, showMeme);
     }
-    $("#generate-btn").click(generate);
-   
-    function showMeme(response){
+    $('#generate-btn').click(generate);
+
+    function showMeme(response) {
+      $('form').show();
       console.log(response);
-      if (response.success){
-      var url = response.data.url;
-      $("#meme-image").attr("src", url);
-      $("#meme-url").text(url);
-      }else{
-        $("#meme-image").attr("src", "badinternet.png");
-     $("#meme-url").text("type something, you fool");
+      if(response.success) {
+        var url = response.data.url;
+        $('#hiddenInput').val(url);
+        $('#meme-image').attr('src', url);
+        $('#meme-url').text(url);
+      } else {
+        $('#meme-image').attr('src', 'https://i.imgflip.com/48tigh.jpg');
+        $('#meme-url').text('Unable to create a meme');
       }
     }
-    
-  </script>
-</body>
 
-</html>
+    function copyUrl() {
+      var urlTag = $('#meme-url');
+      var selection = selectText(urlTag);
+      document.execCommand('copy');
+      deselect(selection);
+      var currentText = urlTag.text();
+      $(urlTag).text('Copied to clipboard.');
+      setTimeout(function(){
+          $(urlTag).text(currentText);
+       }, 1000);
+    }
+    $('.final-meme').click(copyUrl);
+
+
+  </script>
+{% endblock %}

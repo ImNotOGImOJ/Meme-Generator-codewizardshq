@@ -1,0 +1,43 @@
+{% extends "layout.html" %}
+
+{% block heading %}
+    <h1> Memes memes, everywhere </h1>
+{% endblock %}
+
+{% block content %}
+    <div class="container feed-container">    
+
+        {% for meme_obj in memes %}
+        <div class="meme">
+            <div class="meta">
+                <img src="{{url_for('static', filename='user.png')}}">
+                <div class="info">
+                    <h3>{{meme_obj['FirstName']}} {{meme_obj['LastName']}}</h3>
+                    <p>@{{meme_obj['username']}}</p>
+                </div>
+            </div>
+
+            <div class="post">
+                <img src="{{meme_obj['memeImage']}}">
+                <p>{{meme_obj['memeImage']}}</p>
+            </div>
+        </div>
+        {% endfor %}
+
+    </div>
+    <script>
+        function copyUrl(eventObj) {
+            var clickedPost = $(eventObj.currentTarget);
+            var urlTag = clickedPost.children('p');
+            var selection = selectText(urlTag);
+            document.execCommand('copy');
+            deselect(selection);
+            var currentText = urlTag.text();
+            $(urlTag).text('Copied to clipboard.');
+            setTimeout(function () {
+              $(urlTag).text(currentText);
+            }, 1000);
+        }
+        $('.post').click(copyUrl);
+        </script>
+{% endblock %}
