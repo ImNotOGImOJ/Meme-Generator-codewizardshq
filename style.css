@@ -1,0 +1,92 @@
+body {
+  background-image: url('bg.jpg');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: bottom right;
+  color: white;
+}
+
+h1 {
+  text-align: center;
+  font-family: 'Bebas Neue', cursive;
+  font-weight: normal;
+  margin-top: 20px;
+  padding: 5px;
+  color: wheat;
+}
+
+img {
+  max-width: 400px;
+  width: 100%;
+}
+
+input, select {
+  padding: 10px;
+  font-size: 18px;
+  background-color: black;
+  color: white;
+  border: none;
+  border-bottom: 1px solid white;
+  outline: none;
+}
+
+.container {
+  max-width: 800px;
+  background-color: rgba(0,0,0,0.2);
+  padding: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 20px;
+}
+
+.creator {
+  margin-right: 20px;
+  width: 350px;
+}
+
+.final-meme{
+  text-align: center;
+  color: white;
+  background-color: #c0392b;
+}
+
+input, select, #selected-image {
+  width: 100%;
+  display: block;
+  margin-top: 20px;
+}
+
+
+button, a {
+  width: 100%;
+  padding: 10px;
+  background-color: transparent;
+  color: white;
+  border: 1px solid white;
+  margin-top: 5px;
+  font-size: 24px;
+  outline: none;
+  cursor: pointer;
+  font-family: 'Bebas Neue', cursive;
+}
+
+a {
+  width: 250px;
+  text-decoration: none;
+  display: inline-block;
+  text-align: center;
+}
+
+@media (max-width: 700px) {
+  .container {
+    flex-flow: column-reverse;
+    background-color: rgba(0,0,0,0.6);
+  }
+}
+
+@media (max-width: 500px) {
+  .container {
+    flex-flow: column;
+  }
+}
